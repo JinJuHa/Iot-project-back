@@ -4,12 +4,23 @@ const jwt = require("jsonwebtoken");
 const resCode = require("../libs/error");
 
 
+const mailList = ["naver", "daum", "gmail", "kakao", "hanmail"];
+
+
 exports.signup = async (req, res, next) => {
   try {
     const { email, password, name } = req.body;
     // body 확인 예외처리
     if (!email || !password || !name) {
       const error = resCode.BAD_REQUEST_LACK_DATA;
+      console.log("ERROR :", error);
+      return res.status(error.code).json(error);
+    }
+    // 유효 도메인 확인 예외 처리
+    const provider = email.split("@")[1].split(".")[0];
+    if (!mailList.find((mail) => mail === provider)) {
+      const error = JSON.parse(JSON.stringify(resCode.BAD_REQUEST_WRONG_DATA));
+      error.message = "Doamin didn't Provided";
       console.log("ERROR :", error);
       return res.status(error.code).json(error);
     }
