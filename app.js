@@ -5,6 +5,7 @@ const path = require("path");
 const dotenv = require("dotenv");
 const session = require("express-session");
 const cors = require("cors");
+const webSocket = require("./socket");
 
 
 dotenv.config();
@@ -77,3 +78,5 @@ app.use((err, req, res) => {
 const server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중");
 });
+
+webSocket(server, app);
