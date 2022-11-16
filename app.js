@@ -6,6 +6,11 @@ const dotenv = require("dotenv");
 const session = require("express-session");
 const cors = require("cors");
 
+// serialport read
+const SerialPort = require("serialport").SerialPort;
+const sp = new SerialPort({ path: "COM4", baudRate: 9600 });
+console.log(SerialPort);
+
 
 dotenv.config();
 
@@ -76,4 +81,12 @@ app.use((err, req, res) => {
 
 const server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중");
+});
+
+
+sp.on("open", function () {
+  console.log("Serial Port OPEN");
+  sp.on("data", function (data) {
+    console.log(data.toString());
+  });
 });
