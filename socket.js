@@ -1,12 +1,12 @@
 const SocketIO = require("socket.io");
 const SerialPort = require("serialport").SerialPort;
 console.log(SerialPort);
-// const sp = new SerialPort({ path: "COM7", baudRate: 9600 });
+//const sp = new SerialPort({ path: "COM7", baudRate: 9600 });
 
 // sp.on("open", function () {
 //   console.log("Serial Port OPEN");
-//   sp.on("data", function (data) {
-//     //console.log(data.toString());
+// sp.on("data", function (data) {
+//     console.log(data.toString());
 //   });
 // });
 
@@ -32,22 +32,22 @@ module.exports = (server, app) => {
       console.log('user disconnected');
     });
 
-
     const sp = new SerialPort({ path: "COM7", baudRate: 9600 });
 
     sp.on("open", function () {
       console.log("Serial Port OPEN");
       sp.on("data", function (data) {
-        //console.log(data.toString());
+        console.log(data.toString());
         socket.emit('my broadcast', data.toString());
       });
     });
 
-    //socket.emit('my broadcast', data.toString());
-    socket.on('my message', (msg) => {
-        io.emit('my broadcast', `server: ${msg}`);
-        console.log('message: ' + msg);
-      });
+    
+    // socket.emit('my broadcast', (data)=>data.toString());
+    // socket.on('my message', (msg) => {
+    //     io.emit('my broadcast', `server: ${msg}`);
+    //     console.log('message: ' + msg);
+    //   });
     
 
   });
